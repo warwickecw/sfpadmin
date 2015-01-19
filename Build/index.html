@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+            <title>Dashboard</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+            <link rel='stylesheet' href='stylesheets/theme.css'>
+<link rel='stylesheet' href='stylesheets/vendor/animate.css'>
+<link rel='stylesheet' href='stylesheets/vendor/brankic.css'>
+<link rel='stylesheet' href='stylesheets/vendor/ionicons.min.css'>
+<link rel='stylesheet' href='stylesheets/vendor/font-awesome.min.css'>
+<link rel='stylesheet' href='stylesheets/vendor/datepicker.css'>
+<link rel='stylesheet' href='stylesheets/vendor/morris.css'>
+<link rel='stylesheet' href='stylesheets/sfp.css'>
+
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+            <script src='javascript/bootstrap/bootstrap.min.js'></script>
+<script src='javascript/vendor/jquery.cookie.js'></script>
+<script src='javascript/vendor/moment.min.js'></script>
+<script src='javascript/theme.js'></script>
+<script src='javascript/vendor/bootstrap-datepicker.js'></script>
+<script src='javascript/vendor/raphael-min.js'></script>
+<script src='javascript/vendor/morris.min.js'></script>
+<script src='javascript/vendor/jquery.flot/jquery.flot.js'></script>
+<script src='javascript/vendor/jquery.flot/jquery.flot.time.js'></script>
+<script src='javascript/vendor/jquery.flot/jquery.flot.tooltip.js'></script>
+
+            <!--[if lt IE 9]>
+            <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+            <![endif]-->
+
+            
+        <!-- Hammer reload -->
+          <script>
+            setInterval(function(){
+              try {
+                if(typeof ws != 'undefined' && ws.readyState == 1){return true;}
+                ws = new WebSocket('ws://'+(location.host || 'localhost').split(':')[0]+':35353')
+                ws.onopen = function(){ws.onclose = function(){document.location.reload()}}
+                ws.onmessage = function(){
+                  var links = document.getElementsByTagName('link'); 
+                    for (var i = 0; i < links.length;i++) { 
+                    var link = links[i]; 
+                    if (link.rel === 'stylesheet' && !link.href.match(/typekit/)) { 
+                      href = link.href.replace(/((&|\?)hammer=)[^&]+/,''); 
+                      link.href = href + (href.indexOf('?')>=0?'&':'?') + 'hammer='+(new Date().valueOf());
+                    }
+                  }
+                }
+              }catch(e){}
+            }, 1000)
+          </script>
+        <!-- /Hammer reload -->
+      
+        </head>
+
+        <body id="dashboard">
+
+            <div class="toolbar">
+    <nav class="navbar navbar-default">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-viewstore" target="_blank" href="#">View Store</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="" data-toggle="dropdown">
+                        <i class="fa fa-comment"></i>
+                        <span>Support</span>
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a target="_blank" href="//support.ecommercewebsites.com.au">Knowledgebase</a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="//support.ecommercewebsites.com.au/customer/portal/emails/new">Support</a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="//support.ecommercewebsites.com.au/customer/portal/emails/new">30 Day Curriculum</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="account/overview.html" data-toggle="dropdown">
+                        <i class="fa fa-user"></i>
+                        <span>My Account</span>
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="account/overview.html">Overview</a>
+                        </li>
+                        <li>
+                            <a href="account/invoices.html">Invoices</a>
+                        </li>
+                        <li>
+                            <a href="account/billing.html">Billing</a>
+                        </li>
+                        <li>
+                            <a href="account/domains.html">Domain</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+</div>
+            <div id="sidebar-default" class="main-sidebar">
+    <div class="current-user">
+        <a href="index.html" class="current name">
+            <span>
+                Your Store Name
+                <i class="fa fa-chevron-down"></i>
+            </span>
+        </a>
+        <ul class="menu">
+            <li>
+                <a href="account-profile.html">Account settings</a>
+            </li>
+            <li>
+                <a href="account-billing.html">Billing</a>
+            </li>
+            <li>
+                <a href="account-notifications.html">Notifications</a>
+            </li>
+            <li>
+                <a href="account-support.html">Help / Support</a>
+            </li>
+            <li>
+                <a href="signup.html">Sign out</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="search search-global">
+        <div class="form-group">
+            <label class="form-label hidden">Search</label>
+            <input class="form-control" placeholder="Search"/>
+            <button class="btn btn-default btn-search"><i class="fa fa-search"></i></button>
+        </div>
+    </div>
+
+    <div class="menu-section">
+        <ul>
+            <li class='current'>
+                <a class='current' href="index.html">
+                    <i class="ion-android-earth"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="products.html" data-toggle="sidebar">
+                    <span>Products</span>
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="products/categories.html">Categories</a></li>
+                    <li><a href="products/manage.html">Products</a></li>
+                    <li><a href="products/features.html">Product Features</a></li>
+                    <li><a href="products/filters.html">Product Filters</a></li>
+                    <li><a href="products/options.html">Product Options</a></li>
+                    <li><a href="products/reviews.html">Product Reviews</a></li>
+                    <li><a href="products/tabs.html">Product Tabs</a></li>
+                    <li><a href="products/settings.html">Product Settings</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="orders.html" data-toggle="sidebar">
+                    <span>Orders</span>
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="orders/manage.html">Orders</a></li>
+                    <li><a href="orders/incomplete.html">Incomplete Orders</a></li>
+                    <li><a href="orders/shipments.html">Shipments</a></li>
+                    <li><a href="orders/statistics.html">Statistics</a></li>
+                    <li><a href="orders/statuses.html">Statuses</a></li>
+                    <li><a href="orders/settings.html">Order Settings</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="payments.html" data-toggle="sidebar">
+                    <span>Payments</span>
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="payments/manage.html">Payment Methods</a></li>
+                    <li><a href="payments/taxes.html">Taxes</a></li>
+                    <li><a href="payments/currencies.html">Currencies</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="shipping.html" data-toggle="sidebar">
+                    <span>Shipping</span>
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="shipping/manage.html">Shipping Methods</a></li>
+                    <li><a href="shipping/locations.html">Locations</a></li>
+                    <li><a href="shipping/countries.html">Countries</a></li>
+                    <li><a href="shipping/states.html">States</a></li>
+                    <li><a href="shipping/settings.html">Settings</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="content.html" data-toggle="sidebar">
+                    <span>Content</span>
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="content/manage.html">Content Pages</a></li>
+                    <li><a href="content/menus.html">Menus</a></li>
+                    <li><a href="content/forms.html">Forms</a></li>
+                    <li><a href="content/news.html">News</a></li>
+                    <li><a href="content/settings.html">Settings</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="marketing.html" data-toggle="sidebar">
+                    <span>Marketing</span>
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="marketing/seo-rules.html">SEO Rules</a></li>
+                    <li><a href="marketing/sitemap.html">Sitemap</a></li>
+                    <li><a href="marketing/social.html">Social</a></li>
+                    <li><a href="marketing/redirects.html">Redirects</a></li>
+                    <li><a href="marketing/settings.html">Settings</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="marketing.html" data-toggle="sidebar">
+                    <span>Users</span>
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="users/customers.html">Customers</a></li>
+                    <li><a href="users/administrators.html">Administrators</a></li>
+                    <li><a href="users/suppliers.html">Suppliers</a></li>
+                    <li><a href="users/usergroups.html">Usergroups</a></li>
+                    <li><a href="users/profile-fields.html">Profile Fields</a></li>
+                    <li><a href="users/settings.html">Settings</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="pages.html">
+                    <span>Pages</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="menu-section">
+        <ul>
+            <li>
+                <a href="integrations.html">
+                    <span>Integrations</span>
+                </a>
+            </li>
+            <li>
+                <a href="settings.html">
+                    <span>Settings</span>
+                </a>
+            </li>
+            <li>
+                <a href="design.html" data-toggle="sidebar">
+                    <span>Design</span>
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="design/layouts.html">Layouts</a></li>
+                    <li><a href="design/themes.html">Themes</a></li>
+                    <li><a href="design/theme-editor.html">Theme Editor</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+	<div id="wrapper">
+
+		<div id="content">
+
+			<header class="action-bar">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-3">
+            <div class="title-group">
+                <h2 class="page-title">Dashboard</h2>
+                <a class="help" href=""><i class="fa fa-question-circle"></i></a>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-9">
+
+        </div>
+    </div>
+
+</header>
+
+
+
+		</div>
+
+	</div>
+
+
+
+	<script type="text/javascript">
+		$(function () {
+
+			// Range Datepicker
+			$('.input-daterange').datepicker({
+				autoclose: true,
+				orientation: 'right top',
+				endDate: new Date()
+			});
+
+			// Flot Charts
+			var chart_border_color = "#efefef";
+			var chart_color = "#b0b3e3";
+
+			var d = [[utils.get_timestamp(15), 1290], [utils.get_timestamp(14), 1050], [utils.get_timestamp(13), 1100], [utils.get_timestamp(12), 1300], [utils.get_timestamp(11), 1050], [utils.get_timestamp(10), 1521], [utils.get_timestamp(9), 950], [utils.get_timestamp(8), 1130], [utils.get_timestamp(7), 1100], [utils.get_timestamp(6), 1472], [utils.get_timestamp(5), 1410], [utils.get_timestamp(4), 1684], [utils.get_timestamp(3), 1410], [utils.get_timestamp(2), 1322], [utils.get_timestamp(1), 1050], [utils.get_timestamp(0), 1238]];
+
+			var d2 = [[utils.get_timestamp(14), 1500], [utils.get_timestamp(13), 1600], [utils.get_timestamp(12), 1630], [utils.get_timestamp(11), 1310], [utils.get_timestamp(10), 1530], [utils.get_timestamp(9), 2050], [utils.get_timestamp(8), 2310], [utils.get_timestamp(7), 2050], [utils.get_timestamp(6), 2125], [utils.get_timestamp(5), 1400], [utils.get_timestamp(4), 1600], [utils.get_timestamp(3), 1930], [utils.get_timestamp(2), 2000], [utils.get_timestamp(1), 2320]];
+
+			var options = {
+				xaxis: {
+					mode: "time",
+					tickLength: 10
+				},
+				series: {
+					lines: {
+						show: true,
+						lineWidth: 2,
+						fill: true,
+						fillColor: {
+							colors: [{
+								opacity: 0.04
+							}, {
+								opacity: 0.1
+							}]
+						}
+					},
+					shadowSize: 0
+				},
+				selection: {
+					mode: "x"
+				},
+				grid: {
+					hoverable: true,
+					clickable: true,
+					tickColor: chart_border_color,
+					borderWidth: 0,
+					borderColor: chart_border_color,
+				},
+				tooltip: true,
+				colors: [chart_color]
+			};
+
+			var plot = $.plot($("#visitors-chart"), [d], $.extend(options, {
+				tooltipOpts: {
+					content: "Visitors on <b>%x</b>: <span class='value'>%y</span>",
+					defaultTheme: false,
+					shifts: {
+						x: -75,
+						y: -70
+					}
+				}
+			}));
+
+			var plot2 = $.plot($("#payments-chart"), [d2], $.extend(options, {
+				tooltipOpts: {
+					content: "Payments on <b>%x</b>: <span class='value'>$%y</span>",
+					defaultTheme: false,
+					shifts: {
+						x: -75,
+						y: -70
+					}
+				}
+			}));
+
+			var plot3 = $.plot($("#signups-chart"), [d], $.extend(options, {
+				tooltipOpts: {
+					content: "New signups on <b>%x</b>: <b class='value'>%y</b>",
+					defaultTheme: false,
+					shifts: {
+						x: -78,
+						y: -70
+					}
+				}
+			}));
+
+
+			// Bar chart (visitors)
+
+			var dBar = [[utils.get_timestamp(30), 930], [utils.get_timestamp(29), 1200], [utils.get_timestamp(28), 980], [utils.get_timestamp(27), 950], [utils.get_timestamp(26), 1000], [utils.get_timestamp(25), 1050], [utils.get_timestamp(24), 1150], [utils.get_timestamp(23), 2300], [utils.get_timestamp(22), 1200], [utils.get_timestamp(21), 1300], [utils.get_timestamp(20), 1700], [utils.get_timestamp(19), 1450], [utils.get_timestamp(18), 1500], [utils.get_timestamp(17), 546], [utils.get_timestamp(16), 614], [utils.get_timestamp(15), 954], [utils.get_timestamp(14), 1700], [utils.get_timestamp(13), 1800], [utils.get_timestamp(12), 1900], [utils.get_timestamp(11), 2000], [utils.get_timestamp(10), 2100], [utils.get_timestamp(9), 2200], [utils.get_timestamp(8), 2300], [utils.get_timestamp(7), 2400], [utils.get_timestamp(6), 2550], [utils.get_timestamp(5), 2600], [utils.get_timestamp(4), 1800], [utils.get_timestamp(3), 2200], [utils.get_timestamp(2), 2350], [utils.get_timestamp(1), 2800], [utils.get_timestamp(0), 3245]];
+
+			var options2 = {
+				yaxes: {
+					min: 0
+				},
+				xaxis: {
+					mode: "time",
+					timeformat: "%a %d"
+				},
+				series: {
+					bars: {
+						show: true,
+						lineWidth: 0,
+						barWidth: 47000000, // for bar charts, this is width in milliseconds (86400000 would be the width of a day)
+						align: 'center',
+						fillColor: {
+							colors: [{opacity: 0.7}, {opacity: 0.7}]
+						}
+					}
+				},
+				grid: {
+					show: true,
+					hoverable: true,
+					clickable: true,
+					tickColor: chart_border_color,
+					borderWidth: 0,
+					borderColor: chart_border_color,
+				},
+				tooltip: true,
+				tooltipOpts: {
+					content: "Visits on <b>%x</b>: <span class='value'>%y</span>",
+					defaultTheme: false,
+					shifts: {
+						x: -65,
+						y: -70
+					}
+				},
+				colors: ["#4fa3d5"]
+			};
+
+			var plot4 = $.plot($("#bar-chart"), [dBar], options2);
+		});
+	</script>
+
+
+
+        </body>
+    </html>
